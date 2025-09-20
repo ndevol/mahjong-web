@@ -9,6 +9,10 @@ function App() {
     if (!guess) return;
     setLoading(true);
 
+    // Add artificial delay
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    await delay(1000); // 1 second delay
+
     try {
       const response = await fetch("http://127.0.0.1:8000/guess", {
         method: "POST",
