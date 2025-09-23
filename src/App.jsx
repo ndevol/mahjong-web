@@ -1,51 +1,67 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import Tile from "./tile";
+import "./App.css";
 
 function App() {
-  const [guess, setGuess] = useState("");
-  const [message, setMessage] = useState("Enter a number between 1 and 100");
-  const [loading, setLoading] = useState(false);
+  const [hands, setHands] = useState([]);
+  const [remaining, setRemaining] = useState([]);
 
-  const handleGuess = async () => {
-    if (!guess) return;
-    setLoading(true);
-
-    // Add artificial delay
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-    await delay(1000); // 1 second delay
-
+  const startGame = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/guess", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ number: Number(guess) }),
-      });
-
-      if (!response.ok) {
-        setMessage(`Error: ${response.status}`);
-      } else {
-        const data = await response.json();
-        setMessage(data.result);
-      }
+      const res = await axios.get("http://127.0.0.1:8000/start_game");
+      setHands(res.data.hands);
+      setRemaining(res.data.remaining_tiles);
     } catch (err) {
-      setMessage("Could not reach backend.");
+      console.error("Error starting game:", err);
     }
-
-    setLoading(false);
   };
 
+  if (hands.length === 0) {
+    return (
+      <div className="start-screen">
+        <button onClick={startGame}>Start Game</button>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h2>Guess the Number Game</h2>
-      <input
-        type="number"
-        value={guess}
-        onChange={(e) => setGuess(e.target.value)}
-        placeholder="Enter a guess"
-      />
-      <button onClick={handleGuess} disabled={loading}>
-        {loading ? "Checking..." : "Submit Guess"}
-      </button>
-      <div style={{ marginTop: "1rem", fontSize: "1.2rem" }}>{message}</div>
+    <div className="table">
+      {/* Top Hand */}
+      <div className="hand top">
+        {hands[1].map((tile, i) => (
+          <Tile key={i} faceUp={false} />
+        ))}
+      </div>
+
+      {/* Left + Right + Center */}
+      <div className="middle-row">
+        <div className="hand left">
+          {hands[2].map((tile, i) => (
+            <Tile key={i} faceUp={false} />
+          ))}
+        </div>
+
+        {/* Remaining Tiles in center */}
+        <div className="remaining">
+          {remaining.slice(0, 36).map((tile, i) => (
+            <Tile key={i} faceUp={false} />
+          ))}
+        </div>
+
+        <div className="hand right">
+          {hands[3].map((tile, i) => (
+            <Tile key={i} faceUp={false} />
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Hand (player) */}
+      <div className="hand bottom">
+        {hands[0].map((tile, i) => (
+          <Tile key={i} tile={tile} faceUp={true} />
+        ))}
+      </div>
     </div>
   );
 }
