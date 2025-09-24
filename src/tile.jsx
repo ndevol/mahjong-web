@@ -4,41 +4,30 @@ import "./App.css";
 const svgs = import.meta.glob('./assets/tiles/*.svg', { eager: true });
 
 export default function Tile({ tile, faceUp }) {
-  const suit = String(tile?.suit ?? '');
-  const value = String(tile?.value ?? '');
-
-  if (!faceUp) {
-    const key = `./assets/tiles/Back.svg`;
-    const SvgURL = svgs[key].default;
-
-    return (
-    <div className="tile">
-      <img src={SvgURL} alt={`${suit} ${value}`} />
-    </div>
-  );
+  // If we don't yet have a tile, render a placeholder
+  if (!tile && faceUp) {
+    return <div className="tile placeholder" />;
   }
 
-  const key = `./assets/tiles/${suit}-${value}.svg`;
-  const SvgURL = svgs[key].default;
+  const suit = tile?.suit ?? '';
+  const value = tile?.value ?? '';
+
+  const key = faceUp
+    ? `./assets/tiles/${suit}-${value}.svg`
+    : `./assets/tiles/Back.svg`;
+
+  const SvgURL = svgs[key]?.default; // ❗ safe optional chaining
 
   return (
     <div className="tile">
-      <img src={SvgURL} alt={`${suit} ${value}`} />
+      {SvgURL ? (
+        <img
+          src={SvgURL}
+          alt={faceUp ? `${suit} ${value}` : 'Back'}
+        />
+      ) : (
+        <span>?</span> // fallback if SVG not found
+      )}
     </div>
   );
 }
-
-
-// export default function Tile({ tile, faceUp }) {
-//   // In a real app you’d import actual SVGs for each tile.
-//   // For demo, we’ll just render text or a generic back.
-//   if (!faceUp) {
-//     return <div className="tile back"></div>;
-//   }
-
-//   return (
-//     <div className="tile">
-//       {tile.suit}-{tile.value}
-//     </div>
-//   );
-// }
