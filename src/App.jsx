@@ -31,17 +31,29 @@ function App() {
       <div className="game-container">
         <div className="vertical-flex">
           <div className="horizontal-player-container">
-            <div className="hand top"></div>
+            <div className="hand top">
+              {hands[1].map((tile, i) => (
+                <Tile key={i} faceUp={false} />
+              ))}
+            </div>
             <div className="pairs top"></div>
           </div>
           <div className="middle-flex">
             <div className="vertical-player-container">
-              <div className="hand left"></div>
+              <div className="hand left">
+                {hands[2].map((tile, i) => (
+                  <Tile key={i} faceUp={false} />
+                ))}
+              </div>
               <div className="pairs left"></div>
             </div>
             <div className="middle"></div>
             <div className="vertical-player-container">
-              <div className="hand right"></div>
+              <div className="hand right">
+                {hands[3].map((tile, i) => (
+                  <Tile key={i} faceUp={false} />
+                ))}
+              </div>
               <div className="pairs right"></div>
             </div>
           </div>
@@ -57,46 +69,6 @@ function App() {
       </div>
     </div>
   )
-
-  // return (
-  //   <div className="table">
-  //     {/* Top Hand */}
-  //     <div className="hand top">
-  //       {hands[1].map((tile, i) => (
-  //         <Tile key={i} faceUp={false} />
-  //       ))}
-  //     </div>
-
-  //     {/* Left + Right + Center */}
-  //     <div className="middle-row">
-  //       <div className="hand left">
-  //         {hands[2].map((tile, i) => (
-  //           <Tile key={i} faceUp={false} />
-  //         ))}
-  //       </div>
-
-  //       {/* Remaining Tiles in center */}
-  //       <div className="remaining">
-  //         {remaining.slice(0, 36).map((tile, i) => (
-  //           <Tile key={i} faceUp={false} />
-  //         ))}
-  //       </div>
-
-  //       <div className="hand right">
-  //         {hands[3].map((tile, i) => (
-  //           <Tile key={i} faceUp={false} />
-  //         ))}
-  //       </div>
-  //     </div>
-
-  //     {/* Bottom Hand (player) */}
-  //     <div className="hand bottom">
-  //       {hands[0].map((tile, i) => (
-  //         <Tile key={i} tile={tile} faceUp={true} />
-  //       ))}
-  //     </div>
-  //   </div>
-  // );
 }
 
 export default App;
