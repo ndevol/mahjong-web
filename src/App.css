@@ -56,11 +56,11 @@ button {
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
-  grid-template-rows: 40px 1fr 4fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 40px 1fr 3fr 1fr;
   grid-template-areas:
     "header        header        header"
-    "left-player   top-hand      right-player"
+    "left-player   top-player      right-player"
     "left-player   middle-board  right-player"
     "bottom-player bottom-player bottom-player";
 }
@@ -87,7 +87,7 @@ button {
 }
 
 .top-player-container {
-  grid-area: right-player;
+  grid-area: top-player;
 }
 
 .middle {
