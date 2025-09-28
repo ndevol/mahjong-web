@@ -4,6 +4,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { arrayMove } from '@dnd-kit/sortable';
 import Tile from "./tile";
+import SortableTile from "./tileSortable";
 import "./App.css";
 
 function App() {
@@ -83,7 +84,7 @@ function App() {
         <div className="pairs"></div>
         <div className="hand">
           {playerHands.right.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={true} />
+            <Tile key={i} tile={tile} faceUp={false} />
           ))}
         </div>
       </div>
@@ -93,7 +94,7 @@ function App() {
           <SortableContext items={playerHands.bottom.map(tile => tile.id)}> 
             <div className="hand">
               {playerHands.bottom.map((tile) => (
-                <Tile key={tile.id} id={tile.id} tile={tile} faceUp={true} />
+                <SortableTile key={tile.id} id={tile.id} tile={tile} faceUp={true} />
               ))}
             </div>
           </SortableContext>

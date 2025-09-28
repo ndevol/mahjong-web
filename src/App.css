@@ -75,6 +75,7 @@ button {
     "player-left   player-top    player-right"
     "player-left   middle        player-right"
     "player-bottom player-bottom player-bottom";
+  overflow: hidden;
 }
 
 .header {
