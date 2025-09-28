@@ -40,30 +40,38 @@ function App() {
   return (
     <div className="app-container">
       <div className="header"></div>
-      <div className="hand left">
-        {playerHands.left.map((tile, i) => (
-          <Tile key={i} tile={tile} faceUp={false} />
-        ))}
+      <div className="player-vertical" id="player-left">
+        <div className="hand">
+          {playerHands.left.map((tile, i) => (
+            <Tile key={i} tile={tile} faceUp={false} />
+          ))}
+        </div>
+        <div className="pairs"></div>
       </div>
-      <div className="pairs left"></div>
-      <div className="hand top">
-        {playerHands.top.map((tile, i) => (
-          <Tile key={i} tile={tile} faceUp={false} />
-        ))}
+      <div className="player-horizontal" id="player-top">
+        <div className="hand">
+          {playerHands.top.map((tile, i) => (
+            <Tile key={i} tile={tile} faceUp={false} />
+          ))}
+        </div>
+        <div className="pairs"></div>
       </div>
-      <div className="top pairs"></div>
       <div className="middle"></div>
-      <div className="pairs right"></div>
-      <div className="hand right">
-        {playerHands.right.map((tile, i) => (
-          <Tile key={i} tile={tile} faceUp={true} />
-        ))}
+      <div className="player-vertical" id="player-right">
+        <div className="pairs"></div>
+        <div className="hand">
+          {playerHands.right.map((tile, i) => (
+            <Tile key={i} tile={tile} faceUp={true} />
+          ))}
+        </div>
       </div>
-      <div className="pairs bottom"></div>
-      <div className="hand bottom">
-        {playerHands.bottom.map((tile, i) => (
-          <Tile key={i} tile={tile} faceUp={true} />
-        ))}
+      <div className="player-horizontal" id="player-bottom">
+        <div className="pairs"></div>
+        <div className="hand">
+          {playerHands.bottom.map((tile, i) => (
+            <Tile key={i} tile={tile} faceUp={true} />
+          ))}
+        </div>
       </div>
     </div>
   )

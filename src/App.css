@@ -1,4 +1,5 @@
 :root {
+  --tile-margin: 4px;
   --tile-width: 2.7vw;
   --tile-height: calc(var(--tile-width) * 1.4);
 }
@@ -61,15 +62,13 @@ button {
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-columns: 1fr 1fr 6fr 1fr 1fr;
-  grid-template-rows: 40px 1fr 1fr 6fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 40px 1fr 3fr 1fr;
   grid-template-areas:
-    "header      header      header     header        header"
-    "left-hand   left-pairs  top-hand   right-pairs   right-hand"
-    "left-hand   left-pairs  top-pairs  right-pairs   right-hand"
-    "left-hand   left-pairs  middle     right-pairs   right-hand"
-    "bottom-pairs bottom-pairs bottom-pairs bottom-pairs bottom-pairs "
-    "bottom-hand bottom-hand bottom-hand bottom-hand bottom-hand";
+    "header        header        header"
+    "player-left   player-top    player-right"
+    "player-left   middle        player-right"
+    "player-bottom player-bottom player-bottom";
 }
 
 .header {
@@ -79,36 +78,21 @@ button {
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
-.hand.bottom {
-  grid-area: bottom-hand;
+#player-left { grid-area: player-left; }
+#player-top { grid-area: player-top; }
+#player-right { grid-area: player-right; }
+#player-bottom { grid-area: player-bottom; }
+
+.player-vertical {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr; 
 }
 
-.pairs.bottom {
-  grid-area: bottom-pairs;
-}
-
-.hand.left {
-  grid-area: left-hand;
-}
-
-.pairs.left {
-  grid-area: left-pairs;
-}
-
-.hand.right {
-  grid-area: right-hand;
-}
-
-.pairs.right {
-  grid-area: right-pairs;
-}
-
-.hand.top {
-  grid-area: top-hand;
-}
-
-.pairs.top {
-  grid-area: top-pairs;
+.player-horizontal {
+  display: grid; 
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
 .middle {
@@ -124,16 +108,15 @@ button {
   padding: 10px;
 }
 
-.hand.left,
-.hand.right {
+.player-vertical .hand {
   flex-direction: column;
 }
 
-.hand.left .tile img {
+#player-left .tile img {
   transform: rotate(90deg);
 }
 
-.hand.right .tile img {
+#player-right .tile img {
   transform: rotate(-90deg);
 }
 
@@ -144,8 +127,7 @@ button {
   padding: 10px;
 }
 
-.pairs.left,
-.pairs.right {
+.player-vertical .pairs {
   flex-direction: column;
 }
 
@@ -162,8 +144,7 @@ button {
   height: var(--tile-height);
 }
 
-.hand.left .tile,
-.hand.right .tile {
+.player-vertical .tile {
   width: calc(0.95 * var(--tile-height));
   height: calc(0.95 * var(--tile-width));
 }
@@ -174,7 +155,7 @@ button {
   object-fit: contain;
 }
 
-.bottom .tile img {
+#player-bottom .tile img {
   max-width: 95%;
   max-height: 95%;
   width: auto;
