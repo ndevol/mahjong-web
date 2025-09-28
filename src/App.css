@@ -1,7 +1,13 @@
 :root {
+  --header-size: 40px;
   --tile-margin: 4px;
-  --tile-width: 2.7vw;
-  --tile-height: calc(var(--tile-width) * 1.4);
+  --n_tiles: 16;
+  --tile-aspect-ratio: 1.4;
+  --limiting-width-h: calc(((3 * 100vw / 5) - (calc(var(--n_tiles) - 1) * var(--tile-margin))) / var(--n_tiles));
+  --limiting-width-v: calc((((100vh - var(--header-size)) * 4 / 6) - (calc(var(--n_tiles) - 1) * var(--tile-margin))) / var(--n_tiles));
+
+  --tile-width: min(var(--limiting-width-h), var(--limiting-width-v));
+  --tile-height: calc(var(--tile-width) * var(--tile-aspect-ratio));
 }
 
 body {
@@ -63,7 +69,7 @@ button {
   width: 100vw;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
-  grid-template-rows: 40px 1fr 3fr 1fr;
+  grid-template-rows: var(--header-size) 1fr 3fr 2fr;
   grid-template-areas:
     "header        header        header"
     "player-left   player-top    player-right"
@@ -104,7 +110,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: var(--tile-margin);
   padding: 10px;
 }
 
@@ -123,7 +129,7 @@ button {
 .pairs {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: var(--tile-margin);
   padding: 10px;
 }
 
@@ -145,8 +151,8 @@ button {
 }
 
 .player-vertical .tile {
-  width: calc(0.95 * var(--tile-height));
-  height: calc(0.95 * var(--tile-width));
+  width: var(--tile-height);
+  height: var(--tile-width);
 }
 
 .tile img {
@@ -156,8 +162,8 @@ button {
 }
 
 #player-bottom .tile img {
-  max-width: 95%;
-  max-height: 95%;
+  max-width: 100%;
+  max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
