@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 import Tile from "./tile";
 import "./App.css";
 
@@ -28,6 +31,25 @@ function App() {
       console.error("Error starting game:", err);
     }
   };
+
+  function handleDragEnd(event) {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setPlayerHands((prevHands) => {
+        const currentHand = prevHands.bottom;
+        const oldIndex = currentHand.findIndex(tile => tile.id === active.id);
+        const newIndex = currentHand.findIndex(tile => tile.id === over.id);
+        // Safety check: ensure both tiles are found
+        if (oldIndex === -1 || newIndex === -1) return prevHands;
+
+        return {
+          ...prevHands,
+          bottom: arrayMove(currentHand, oldIndex, newIndex),
+        };
+      });
+    }
+  }
 
   if (hands.length === 0) {
     return (
@@ -67,11 +89,15 @@ function App() {
       </div>
       <div className="player-horizontal" id="player-bottom">
         <div className="pairs"></div>
-        <div className="hand">
-          {playerHands.bottom.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={true} />
-          ))}
-        </div>
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={playerHands.bottom.map(tile => tile.id)}> 
+            <div className="hand">
+              {playerHands.bottom.map((tile) => (
+                <Tile key={tile.id} id={tile.id} tile={tile} faceUp={true} />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   )
