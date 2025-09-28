@@ -56,7 +56,7 @@ function App() {
       <div className="pairs right"></div>
       <div className="hand right">
         {playerHands.right.map((tile, i) => (
-          <Tile key={i} tile={tile} faceUp={false} />
+          <Tile key={i} tile={tile} faceUp={true} />
         ))}
       </div>
       <div className="pairs bottom"></div>

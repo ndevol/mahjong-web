@@ -1,3 +1,8 @@
+:root {
+  --tile-width: 2.7vw;
+  --tile-height: calc(var(--tile-width) * 1.4);
+}
+
 body {
   background: #b9fbc0;
   color: #fff;
@@ -138,16 +143,19 @@ button {
   padding: 10px;
 }
 
+.pairs.left,
+.pairs.right {
+  flex-direction: column;
+}
+
 .tile {
-  width: 30px;
-  height: 50px;
+  width: var(--tile-width);
+  height: var(--tile-height);
   background: white;
-  border: 1px solid #ccc; 
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  overflow: hidden;
 }
 
 .tile img{
