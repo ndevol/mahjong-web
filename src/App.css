@@ -150,13 +150,16 @@ button {
 }
 
 .tile {
-  width: var(--tile-width);
-  height: var(--tile-height);
   background: white;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 4px;
+}
+
+.top .tile {
+  width: var(--tile-width);
+  height: var(--tile-height);
 }
 
 .hand.left .tile,
@@ -165,8 +168,16 @@ button {
   height: calc(0.95 * var(--tile-width));
 }
 
-.tile img{
+.tile img {
   width: var(--tile-width);
   height: var(--tile-height);
+  object-fit: contain;
+}
+
+.bottom .tile img {
+  max-width: 95%;
+  max-height: 95%;
+  width: auto;
+  height: auto;
   object-fit: contain;
 }

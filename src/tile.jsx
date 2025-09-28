@@ -18,6 +18,10 @@ export default function Tile({ tile, faceUp }) {
 
   const SvgURL = svgs[key]?.default; // ❗ safe optional chaining
 
+  if (!SvgURL) {
+    console.log(`${suit} ${value} not found`);
+  }
+
   return (
     <div className="tile">
       {SvgURL ? (
