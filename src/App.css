@@ -56,13 +56,15 @@ button {
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  grid-template-rows: 40px 1fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 6fr 1fr 1fr;
+  grid-template-rows: 40px 1fr 1fr 6fr 1fr 1fr;
   grid-template-areas:
-    "header        header        header"
-    "left-player   top-player      right-player"
-    "left-player   middle-board  right-player"
-    "bottom-player bottom-player bottom-player";
+    "header      header      header     header        header"
+    "left-hand   left-pairs  top-hand   right-pairs   right-hand"
+    "left-hand   left-pairs  top-pairs  right-pairs   right-hand"
+    "left-hand   left-pairs  middle     right-pairs   right-hand"
+    "bottom-pairs bottom-pairs bottom-pairs bottom-pairs bottom-pairs "
+    "bottom-hand bottom-hand bottom-hand bottom-hand bottom-hand";
 }
 
 .header {
@@ -72,26 +74,40 @@ button {
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
-.bottom-player-container {
-  grid-area: bottom-player;
-  display: flex;
-  flex-direction: column;
+.hand.bottom {
+  grid-area: bottom-hand;
 }
 
-.left-player-container {
-  grid-area: left-player;
+.pairs.bottom {
+  grid-area: bottom-pairs;
 }
 
-.right-player-container {
-  grid-area: right-player;
+.hand.left {
+  grid-area: left-hand;
 }
 
-.top-player-container {
-  grid-area: top-player;
+.pairs.left {
+  grid-area: left-pairs;
+}
+
+.hand.right {
+  grid-area: right-hand;
+}
+
+.pairs.right {
+  grid-area: right-pairs;
+}
+
+.hand.top {
+  grid-area: top-hand;
+}
+
+.pairs.top {
+  grid-area: top-pairs;
 }
 
 .middle {
-  grid-area: middle-board;
+  grid-area: middle;
   display: flex;
 }
 

@@ -40,38 +40,30 @@ function App() {
   return (
     <div className="app-container">
       <div className="header"></div>
-      <div className="left-player-container">
-        <div className="hand left">
-          {/* {playerHands.left.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={false} />
-          ))} */}
-        </div>
-        <div className="pairs left"></div>
+      <div className="hand left">
+        {playerHands.left.map((tile, i) => (
+          <Tile key={i} tile={tile} faceUp={false} />
+        ))}
       </div>
-      <div className="top-player-container">
-        <div className="hand top">
-          {playerHands.top.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={false} />
-          ))}
-        </div>
-        <div className="pairs top"></div>
+      <div className="pairs left"></div>
+      <div className="hand top">
+        {playerHands.top.map((tile, i) => (
+          <Tile key={i} tile={tile} faceUp={false} />
+        ))}
       </div>
+      <div className="top pairs"></div>
       <div className="middle"></div>
-      <div className="right-player-container">
-        <div className="pairs right"></div>
-        <div className="hand right">
-          {/* {playerHands.right.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={false} />
-          ))} */}
-        </div>
+      <div className="pairs right"></div>
+      <div className="hand right">
+        {playerHands.right.map((tile, i) => (
+          <Tile key={i} tile={tile} faceUp={false} />
+        ))}
       </div>
-      <div className="bottom-player-container">
-        <div className="pairs bottom"></div>
-        <div className="hand bottom">
-          {playerHands.bottom.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={true} />
-          ))}
-        </div>
+      <div className="pairs bottom"></div>
+      <div className="hand bottom">
+        {playerHands.bottom.map((tile, i) => (
+          <Tile key={i} tile={tile} faceUp={true} />
+        ))}
       </div>
     </div>
   )
