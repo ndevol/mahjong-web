@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import Tile from './tile';
 
 
-export default function SortableTile({ id, tile, faceUp }) {
+export default function SortableTile({ id, tile, faceUp, onHover, onClick }) {
   const {
     attributes,
     listeners,
@@ -22,14 +22,23 @@ export default function SortableTile({ id, tile, faceUp }) {
     cursor: 'grab',
   };
 
+  const handleClick = (e) => {
+    if (!isDragging && onClick) {
+      onClick(tile);
+    }
+  };
+
   return (
     <div
-      ref={setNodeRef}       
-      style={style}          
-      {...attributes}        
-      {...listeners}         
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      onClick={handleClick}
+      onMouseEnter={() => onHover && onHover(id)}
+      onMouseLeave={() => onHover && onHover(null)}
     >
-      <Tile tile={tile} faceUp={faceUp} />
+      <Tile tile={tile} faceUp={faceUp} isSelected={tile.id === id} />
     </div>
   );
 }

@@ -169,3 +169,62 @@ button {
   height: auto;
   object-fit: contain;
 }
+
+.middle {
+  grid-area: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.centered-tile {
+  transform: scale(1.5);
+}
+
+.timer-bar {
+  width: 200px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.timer-progress {
+  height: 100%;
+  background: #4CAF50;
+  transition: width 50ms linear;
+}
+
+.tile:hover {
+  background-color: gray;
+  position: relative;
+}
+
+.tile:hover::after {
+  content: "×";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: red;
+  pointer-events: none;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tile.new-tile {
+  animation: slideIn 1s ease-out;
+}
