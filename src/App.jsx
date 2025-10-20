@@ -160,16 +160,16 @@ function App() {
       <div className="header"></div>
       <div className="player-vertical" id="player-left">
         <div className="hand">
-          {playerHands.left.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={false} />
+          {playerHands.left.map((tile) => (
+            <Tile key={tile.id} tile={tile} faceUp={false} />
           ))}
         </div>
         <div className="pairs"></div>
       </div>
       <div className="player-horizontal" id="player-top">
         <div className="hand">
-          {playerHands.top.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={false} />
+          {playerHands.top.map((tile) => (
+            <Tile key={tile.id} tile={tile} faceUp={false} />
           ))}
         </div>
         <div className="pairs"></div>
@@ -192,20 +192,16 @@ function App() {
       <div className="player-vertical" id="player-right">
         <div className="pairs"></div>
         <div className="hand">
-          {playerHands.right.map((tile, i) => (
-            <Tile key={i} tile={tile} faceUp={false} />
+          {playerHands.right.map((tile) => (
+            <Tile key={tile.id} tile={tile} faceUp={false} />
           ))}
         </div>
       </div>
       <div className="player-horizontal" id="player-bottom">
         <div className="pairs"></div>
           <div className="hand">
-            {playerHands.bottom.map((tile, i) => (
-              <Tile
-                key={i}
-                tile={tile}
-                faceUp={true}
-              />
+            {playerHands.bottom.map((tile) => (
+              <Tile key={tile.id} tile={tile} faceUp={true} />
             ))}
           </div>
       </div>
