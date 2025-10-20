@@ -3,7 +3,7 @@ import "./App.css";
 
 const svgs = import.meta.glob('./assets/tiles/*.svg', { eager: true });
 
-export default function Tile({ tile, faceUp}) {
+export default function Tile({ tile, faceUp, canDiscard, onClick }) {
   // If we don't yet have a tile, render a placeholder
   if (!tile && faceUp) {
     return <div className="tile placeholder" />;
@@ -23,7 +23,11 @@ export default function Tile({ tile, faceUp}) {
   }
 
   return (
-    <div className='tile'>
+    <div 
+      className='tile' 
+      data-can-discard={canDiscard}
+      onClick={() => onClick && onClick(tile)}
+    >
       {SvgURL ? (
         <img
           src={SvgURL}

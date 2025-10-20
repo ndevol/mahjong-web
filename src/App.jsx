@@ -167,7 +167,13 @@ function App() {
         <div className="pairs"></div>
           <div className="hand">
             {playerHands[0].map((tile) => (
-              <Tile key={tile.id} tile={tile} faceUp={true} />
+              <Tile 
+                key={tile.id} 
+                tile={tile} 
+                faceUp={true}
+                canDiscard={currentPlayer === 0 && gamePhase === 'discard'}
+                onClick={handleTileClick}
+              />
             ))}
           </div>
       </div>

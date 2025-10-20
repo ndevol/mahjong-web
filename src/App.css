@@ -198,12 +198,12 @@ button {
   transition: width 50ms linear;
 }
 
-#player-bottom .tile:hover {
+#player-bottom .tile[data-can-discard="true"]:hover {
   background-color: gray;
   position: relative;
 }
 
-#player-bottom .tile:hover::after {
+#player-bottom .tile[data-can-discard="true"]:hover::after {
   content: "×";
   position: absolute;
   top: 50%;
