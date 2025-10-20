@@ -8,7 +8,7 @@ function App() {
   const [remaining, setRemaining] = useState([]);
   const [playerHands, setPlayerHands] = useState([[], [], [], []]);
   const [currentPlayer, setCurrentPlayer] = useState(0); // 0: bottom, 1: right, 2: top, 3: left
-  const [gamePhase, setGamePhase] = useState('draw'); // 'draw', 'discard', 'waiting'
+  const [gamePhase, setGamePhase] = useState('not_started'); // 'not_started', 'draw', 'discard', 'waiting'
   const [lastDiscarded, setLastDiscarded] = useState(null);
   const [timerProgress, setTimerProgress] = useState(100);
 
@@ -55,12 +55,19 @@ function App() {
     }
   };
 
-  // Handle initial draw
+  // End game if no remaining tiles
   useEffect(() => {
-    if (gamePhase === 'draw' && remaining.length > 0) {
+    if (gamePhase != 'not_started' && remaining.length === 0) {
+      alert("Game over! No remaining tiles.");
+    }
+  }, [remaining]);
+
+  // Draw tiles when gamePhase changes to 'draw'
+  useEffect(() => {
+    if (gamePhase === 'draw') {
       drawTile();
     }
-  }, [gamePhase, remaining.length, drawTile]);
+  }, [gamePhase, drawTile]);
 
   // Handle computer turns
   useEffect(() => {
@@ -106,7 +113,7 @@ function App() {
     }
   };
 
-  if (hands.length === 0) {
+  if (gamePhase === 'not_started') {
     return (
       <div className="start-screen">
         <button className="start-button" onClick={startGame}>Start Game</button>
