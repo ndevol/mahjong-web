@@ -3,7 +3,7 @@ import "./App.css";
 
 const svgs = import.meta.glob('./assets/tiles/*.svg', { eager: true });
 
-export default function Tile({ tile, faceUp, isSelected  }) {
+export default function Tile({ tile, faceUp}) {
   // If we don't yet have a tile, render a placeholder
   if (!tile && faceUp) {
     return <div className="tile placeholder" />;
@@ -23,7 +23,7 @@ export default function Tile({ tile, faceUp, isSelected  }) {
   }
 
   return (
-    <div className={`tile ${isSelected ? 'selected' : ''} ${tile.isNew ? 'new-tile' : ''}`}>
+    <div className='tile'>
       {SvgURL ? (
         <img
           src={SvgURL}
