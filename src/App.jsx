@@ -75,10 +75,9 @@ function App() {
       // Computer draws a tile
       setTimeout(() => {
         drawTile();
-        // Computer discards the last tile they drew
+        // Computer discards the oldest tile in their hand
         setTimeout(() => {
-          const lastTile = playerHands[currentPlayer][playerHands[currentPlayer].length - 1];
-          discardTile(lastTile);
+          discardTile(playerHands[currentPlayer][0]);
         }, 1000);
       }, 500);
     }
