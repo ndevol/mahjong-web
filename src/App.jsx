@@ -6,12 +6,7 @@ import "./App.css";
 function App() {
   const [hands, setHands] = useState([]);
   const [remaining, setRemaining] = useState([]);
-  const [playerHands, setPlayerHands] = useState({
-        top: [],
-        bottom: [],
-        left: [],
-        right: []
-  });
+  const [playerHands, setPlayerHands] = useState([[], [], [], []]);
   const [currentPlayer, setCurrentPlayer] = useState(0); // 0: bottom, 1: right, 2: top, 3: left
   const [gamePhase, setGamePhase] = useState('draw'); // 'draw', 'discard', 'waiting'
   const [selectedTile, setSelectedTile] = useState(null);
@@ -23,48 +18,27 @@ function App() {
   const drawTile = useCallback(() => {
     if (remaining.length === 0) return;
     
-    const newTile = { ...remaining[0], isNew: true};
+    const newTile = remaining[0];
     console.log("Drew tile:", newTile);
     const newRemaining = remaining.slice(1);
     setRemaining(newRemaining);
-    
-    setPlayerHands(prev => {
-      const positions = ['bottom', 'left', 'top', 'right'];
-      const position = positions[currentPlayer];
-      return {
-        ...prev,
-        [position]: [...prev[position], newTile]
-      };
+
+    setPlayerHands(prevHands => {
+      const newHands = [...prevHands];
+      newHands[currentPlayer] = [...prevHands[currentPlayer], newTile];
+      return newHands;
     });
 
-    // Remove the isNew flag after animation
-    setTimeout(() => {
-      setPlayerHands(prev => {
-        const positions = ['bottom', 'left', 'top', 'right'];
-        const position = positions[currentPlayer];
-        return {
-          ...prev,
-          [position]: prev[position].map(tile => ({
-            ...tile,
-            isNew: false
-          }))
-        };
-      });
-    }, 1000); // Match animation duration
-    
     setGamePhase('discard');
   }, [remaining, currentPlayer]);
 
   const discardTile = useCallback((tile) => {
     console.log("Discarded tile:", tile);
     setLastDiscarded(tile);
-    setPlayerHands(prev => {
-      const positions = ['bottom', 'left', 'top', 'right'];
-      const position = positions[currentPlayer];
-      return {
-        ...prev,
-        [position]: prev[position].filter(t => t.id !== tile.id)
-      };
+    setPlayerHands(prevHands => {
+      const newHands = [...prevHands];
+      newHands[currentPlayer] = prevHands[currentPlayer].filter(t => t.id !== tile.id);
+      return newHands;
     });
     setGamePhase('waiting');
   }, [currentPlayer]);
@@ -74,12 +48,7 @@ function App() {
       const res = await axios.get("http://127.0.0.1:8000/start_game");
       setHands(res.data.hands);
       setRemaining(res.data.remaining_tiles);
-      setPlayerHands({
-        top: res.data.hands[0],
-        bottom: res.data.hands[0],
-        left: res.data.hands[0],
-        right: res.data.hands[0]
-      });
+      setPlayerHands(res.data.hands);
       setGamePhase('draw');
       setCurrentPlayer(0);
     } catch (err) {
@@ -96,15 +65,13 @@ function App() {
 
   // Handle computer turns
   useEffect(() => {
-    if (currentPlayer === 0 && gamePhase === 'draw') {
+    if (currentPlayer != 0 && gamePhase === 'draw') {
       // Computer draws a tile
       setTimeout(() => {
         drawTile();
         // Computer discards the last tile they drew
         setTimeout(() => {
-          const positions = ['bottom', 'left', 'top', 'right'];
-          const position = positions[currentPlayer];
-          const lastTile = playerHands[position][playerHands[position].length - 1];
+          const lastTile = playerHands[currentPlayer][playerHands[currentPlayer].length - 1];
           discardTile(lastTile);
         }, 1000);
       }, 500);
@@ -160,7 +127,7 @@ function App() {
       <div className="header"></div>
       <div className="player-vertical" id="player-left">
         <div className="hand">
-          {playerHands.left.map((tile) => (
+          {playerHands[3].map((tile) => (
             <Tile key={tile.id} tile={tile} faceUp={false} />
           ))}
         </div>
@@ -168,7 +135,7 @@ function App() {
       </div>
       <div className="player-horizontal" id="player-top">
         <div className="hand">
-          {playerHands.top.map((tile) => (
+          {playerHands[2].map((tile) => (
             <Tile key={tile.id} tile={tile} faceUp={false} />
           ))}
         </div>
@@ -192,7 +159,7 @@ function App() {
       <div className="player-vertical" id="player-right">
         <div className="pairs"></div>
         <div className="hand">
-          {playerHands.right.map((tile) => (
+          {playerHands[1].map((tile) => (
             <Tile key={tile.id} tile={tile} faceUp={false} />
           ))}
         </div>
@@ -200,7 +167,7 @@ function App() {
       <div className="player-horizontal" id="player-bottom">
         <div className="pairs"></div>
           <div className="hand">
-            {playerHands.bottom.map((tile) => (
+            {playerHands[0].map((tile) => (
               <Tile key={tile.id} tile={tile} faceUp={true} />
             ))}
           </div>
