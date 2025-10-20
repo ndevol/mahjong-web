@@ -16,12 +16,11 @@ function App() {
         left: [],
         right: []
   });
-  const [currentPlayer, setCurrentPlayer] = useState(0); // 0: bottom, 1: left, 2: top, 3: right
+  const [currentPlayer, setCurrentPlayer] = useState(0); // 0: bottom, 1: right, 2: top, 3: left
   const [gamePhase, setGamePhase] = useState('draw'); // 'draw', 'discard', 'waiting'
   const [selectedTile, setSelectedTile] = useState(null);
   const [lastDiscarded, setLastDiscarded] = useState(null);
   const [timerProgress, setTimerProgress] = useState(100);
-  const [isHuman, setIsHuman] = useState(true);
 
   const TIMER_DURATION = 3000; // milliseconds
 
@@ -87,7 +86,6 @@ function App() {
       });
       setGamePhase('draw');
       setCurrentPlayer(0);
-      setIsHuman(true);
     } catch (err) {
       console.error("Error starting game:", err);
     }
@@ -102,7 +100,7 @@ function App() {
 
   // Handle computer turns
   useEffect(() => {
-    if (!isHuman && gamePhase === 'draw') {
+    if (currentPlayer === 0 && gamePhase === 'draw') {
       // Computer draws a tile
       setTimeout(() => {
         drawTile();
@@ -115,7 +113,7 @@ function App() {
         }, 1000);
       }, 500);
     }
-  }, [isHuman, gamePhase, drawTile, discardTile, currentPlayer, playerHands]);
+  }, [currentPlayer, gamePhase, drawTile, discardTile, playerHands]);
 
   // Handle waiting period timer
   useEffect(() => {
@@ -130,7 +128,6 @@ function App() {
           clearInterval(timer);
           // Move to next player
           setCurrentPlayer((prev) => (prev + 1) % 4);
-          setIsHuman((prev) => !prev);
           setGamePhase('draw');
           setTimerProgress(100);
         }
@@ -142,14 +139,14 @@ function App() {
 
   // Handle tile hover for human player
   const handleTileHover = (tileId) => {
-    if (isHuman && gamePhase === 'discard') {
+    if (currentPlayer === 0 && gamePhase === 'discard') {
       setSelectedTile(tileId);
     }
   };
 
   // Handle tile click for human player
   const handleTileClick = (tile) => {
-    if (isHuman && gamePhase === 'discard') {
+    if (currentPlayer === 0 && gamePhase === 'discard') {
       discardTile(tile);
     }
   };
