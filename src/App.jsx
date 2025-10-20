@@ -64,10 +64,10 @@ function App() {
 
   // Draw tiles when gamePhase changes to 'draw'
   useEffect(() => {
-    if (gamePhase === 'draw') {
+    if (currentPlayer === 0 && gamePhase === 'draw') {
       drawTile();
     }
-  }, [gamePhase, drawTile]);
+  }, [currentPlayer, gamePhase, drawTile]);
 
   // Handle computer turns
   useEffect(() => {
