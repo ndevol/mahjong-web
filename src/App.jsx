@@ -18,7 +18,7 @@ function App() {
     if (remaining.length === 0) return;
     
     const newTile = remaining[0];
-    console.log("Drew tile:", newTile);
+    console.log("Player ", currentPlayer, "drew tile:", newTile);
     const newRemaining = remaining.slice(1);
     setRemaining(newRemaining);
 
@@ -32,7 +32,7 @@ function App() {
   }, [remaining, currentPlayer]);
 
   const discardTile = useCallback((tile) => {
-    console.log("Discarded tile:", tile);
+    console.log("Player", currentPlayer, "Discarded tile:", tile);
     setLastDiscarded(tile);
     setPlayerHands(prevHands => {
       const newHands = [...prevHands];
