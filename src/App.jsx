@@ -9,7 +9,6 @@ function App() {
   const [playerHands, setPlayerHands] = useState([[], [], [], []]);
   const [currentPlayer, setCurrentPlayer] = useState(0); // 0: bottom, 1: right, 2: top, 3: left
   const [gamePhase, setGamePhase] = useState('draw'); // 'draw', 'discard', 'waiting'
-  const [selectedTile, setSelectedTile] = useState(null);
   const [lastDiscarded, setLastDiscarded] = useState(null);
   const [timerProgress, setTimerProgress] = useState(100);
 
@@ -99,13 +98,6 @@ function App() {
       return () => clearInterval(timer);
     }
   }, [gamePhase]);
-
-  // Handle tile hover for human player
-  const handleTileHover = (tileId) => {
-    if (currentPlayer === 0 && gamePhase === 'discard') {
-      setSelectedTile(tileId);
-    }
-  };
 
   // Handle tile click for human player
   const handleTileClick = (tile) => {
