@@ -41,32 +41,30 @@ function App() {
     setGamePhase('waiting');
   }, [currentPlayer]);
 
+  const sortHand = (hand) => {
+    const suitOrder = ["wind", "dragon", "bing", "tiao", "wan"];
+
+    return [...hand].sort((a, b) => {
+      const indexA = suitOrder.indexOf(a.suit);
+      const indexB = suitOrder.indexOf(b.suit);
+
+      if (a.suit !== b.suit) {
+        return indexA - indexB;
+      }
+      if (a.suit === "wind" || a.suit === "dragon") {
+        return a.value.localeCompare(b.value);
+      }
+      return a.value - parseInt(b.value);
+    })
+  };
+
   const startGame = async () => {
     try {
       const res = await axios.get("http://127.0.0.1:8000/start_game");
-
-      const suitOrder = ["wind", "dragon", "bing", "tiao", "wan"];
-
-      const sortedHands = res.data.hands.map(hand => 
-        [...hand].sort((a, b) => {
-          const indexA = suitOrder.indexOf(a.suit);
-          const indexB = suitOrder.indexOf(b.suit);
-
-          if (a.suit !== b.suit) {
-            return indexA - indexB;
-          }
-          if (a.suit === "wind" || a.suit === "dragon") {
-            return a.value.localeCompare(b.value);
-          }
-          return a.value - parseInt(b.value);
-        })
-      );
-
+      const sortedHands = res.data.hands.map(hand => sortHand(hand));
 
       setRemaining(res.data.remaining_tiles);
       setPlayerHands(sortedHands);
-      console.log(res.data.hands[0]);
-      console.log(sortedHands[0]);
       setGamePhase('draw');
       setCurrentPlayer(0);
     } catch (err) {
