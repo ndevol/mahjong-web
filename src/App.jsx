@@ -13,6 +13,37 @@ function App() {
 
   const TIMER_DURATION = 3000; // milliseconds
 
+  const startGame = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/start_game");
+      const sortedHands = res.data.hands.map(hand => sortHand(hand));
+
+      setRemaining(res.data.remaining_tiles);
+      setPlayerHands(sortedHands);
+      setGamePhase('draw');
+      setCurrentPlayer(0);
+    } catch (err) {
+      console.error("Error starting game:", err);
+    }
+  };
+
+  const sortHand = (hand) => {
+    const suitOrder = ["wind", "dragon", "bing", "tiao", "wan"];
+
+    return [...hand].sort((a, b) => {
+      const indexA = suitOrder.indexOf(a.suit);
+      const indexB = suitOrder.indexOf(b.suit);
+
+      if (a.suit !== b.suit) {
+        return indexA - indexB;
+      }
+      if (a.suit === "wind" || a.suit === "dragon") {
+        return a.value.localeCompare(b.value);
+      }
+      return a.value - parseInt(b.value);
+    })
+  };
+
   const drawTile = useCallback(() => {
     if (remaining.length === 0) return;
     
@@ -35,42 +66,11 @@ function App() {
     setLastDiscarded(tile);
     setPlayerHands(prevHands => {
       const newHands = [...prevHands];
-      newHands[currentPlayer] = prevHands[currentPlayer].filter(t => t.id !== tile.id);
+      newHands[currentPlayer] = sortHand(prevHands[currentPlayer].filter(t => t.id !== tile.id));
       return newHands;
     });
     setGamePhase('waiting');
   }, [currentPlayer]);
-
-  const sortHand = (hand) => {
-    const suitOrder = ["wind", "dragon", "bing", "tiao", "wan"];
-
-    return [...hand].sort((a, b) => {
-      const indexA = suitOrder.indexOf(a.suit);
-      const indexB = suitOrder.indexOf(b.suit);
-
-      if (a.suit !== b.suit) {
-        return indexA - indexB;
-      }
-      if (a.suit === "wind" || a.suit === "dragon") {
-        return a.value.localeCompare(b.value);
-      }
-      return a.value - parseInt(b.value);
-    })
-  };
-
-  const startGame = async () => {
-    try {
-      const res = await axios.get("http://127.0.0.1:8000/start_game");
-      const sortedHands = res.data.hands.map(hand => sortHand(hand));
-
-      setRemaining(res.data.remaining_tiles);
-      setPlayerHands(sortedHands);
-      setGamePhase('draw');
-      setCurrentPlayer(0);
-    } catch (err) {
-      console.error("Error starting game:", err);
-    }
-  };
 
   // End game if no remaining tiles
   useEffect(() => {
