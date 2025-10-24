@@ -4,7 +4,6 @@ import Tile from "./tile";
 import "./App.css";
 
 function App() {
-  const [hands, setHands] = useState([]);
   const [remaining, setRemaining] = useState([]);
   const [playerHands, setPlayerHands] = useState([[], [], [], []]);
   const [currentPlayer, setCurrentPlayer] = useState(0); // 0: bottom, 1: right, 2: top, 3: left
@@ -45,9 +44,29 @@ function App() {
   const startGame = async () => {
     try {
       const res = await axios.get("http://127.0.0.1:8000/start_game");
-      setHands(res.data.hands);
+
+      const suitOrder = ["wind", "dragon", "bing", "tiao", "wan"];
+
+      const sortedHands = res.data.hands.map(hand => 
+        [...hand].sort((a, b) => {
+          const indexA = suitOrder.indexOf(a.suit);
+          const indexB = suitOrder.indexOf(b.suit);
+
+          if (a.suit !== b.suit) {
+            return indexA - indexB;
+          }
+          if (a.suit === "wind" || a.suit === "dragon") {
+            return a.value.localeCompare(b.value);
+          }
+          return a.value - parseInt(b.value);
+        })
+      );
+
+
       setRemaining(res.data.remaining_tiles);
-      setPlayerHands(res.data.hands);
+      setPlayerHands(sortedHands);
+      console.log(res.data.hands[0]);
+      console.log(sortedHands[0]);
       setGamePhase('draw');
       setCurrentPlayer(0);
     } catch (err) {
